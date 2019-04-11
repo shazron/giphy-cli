@@ -28,42 +28,24 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`oclif-example giphy:random`](#oclif-example-giphyrandom)
-* [`oclif-example hello`](#oclif-example-hello)
+* [`oclif-example giphy:random [TAG]`](#oclif-example-giphyrandom-tag)
 
-## `oclif-example giphy:random`
+## `oclif-example giphy:random [TAG]`
 
-Describe the command here
+Grabs a random gif from giphy
 
 ```
 USAGE
-  $ oclif-example giphy:random
+  $ oclif-example giphy:random [TAG]
+
+ARGUMENTS
+  TAG  filters results by the specified tag
 
 OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
+  -k, --api-key=api-key        the Giphy API key
+  -l, --link                   show link only
+  -r, --rating=y|g|pg|pg-13|r  [default: g] filters results by specified rating
 ```
 
 _See code: [src/commands/giphy/random.js](https://github.com/shazron/giphy/blob/v0.0.1/src/commands/giphy/random.js)_
-
-## `oclif-example hello`
-
-Describe the command here
-
-```
-USAGE
-  $ oclif-example hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/hello.js](https://github.com/shazron/giphy/blob/v0.0.1/src/commands/hello.js)_
 <!-- commandsstop -->
