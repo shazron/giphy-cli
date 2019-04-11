@@ -6,7 +6,10 @@
   "bugs": "https://github.com/shazron/giphy/issues",
   "dependencies": {
     "@oclif/command": "^1.5.12",
-    "@oclif/config": "^1.12.12"
+    "@oclif/config": "^1.12.12",
+    "axios": "^0.18.0",
+    "cli-ux": "^5.2.1",
+    "imgcat": "^2.3.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.0",
