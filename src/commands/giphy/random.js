@@ -18,8 +18,8 @@ class RandomCommand extends Command {
     }
 
     return axios.request({
-      url: '/v1/gifs/random',
       baseURL: 'http://api.giphy.com',
+      url: '/v1/gifs/random',
       method: 'get',
       params
     })
@@ -28,7 +28,7 @@ class RandomCommand extends Command {
       if (flags.link) {
         cli.url(gif_url, gif_url)
       } else {
-        imgcat(gif_url, {log: true})
+        imgcat(gif_url, { log: true })
       }
     })
     .catch((error) => {
