@@ -32,7 +32,8 @@ class RandomCommand extends Command {
       }
     })
     .catch((error) => {
-      this.log(error)
+      const { response } = error
+      this.log(`${response.status} ${response.statusText}: ${response.data.message}`)
     })
   }
 }
