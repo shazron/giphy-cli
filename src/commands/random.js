@@ -1,5 +1,5 @@
 const { flags } = require('@oclif/command')
-const BaseCommand = require('../base')
+const BaseCommand = require('./base')
 const termImg = require('term-img')
 const { cli } = require('cli-ux')
 const { URLSearchParams } = require('url');
@@ -23,11 +23,15 @@ class RandomCommand extends BaseCommand {
     try {
       const endpoint = '/v1/gifs/random'
       cli.action.start('Contacting Giphy...')
-      const res = await fetch(`http://api.giphy.com${endpoint}?${params.toString()}`)
-      const response = await res.json()
+      const response = await fetch(`http://api.giphy.com${endpoint}?${params.toString()}`)
+      const json = await response.json()
       cli.action.stop()
 
-      const gifUrl = response.data.image_url
+      if (!response.ok) {
+        throw { response, json }
+      }
+
+      const gifUrl = json.data.image_url
       function showLink() {
         cli.url(gifUrl, gifUrl)
       }
@@ -47,9 +51,9 @@ class RandomCommand extends BaseCommand {
         showLink()
       }      
     } catch(error) {
-        const { response } = error
-        if (response && response.status && response.statusText && response.data.message) {
-          this.log(`${response.status} ${response.statusText}: ${response.data.message}`)
+        const { response, json } = error
+        if (response && response.status && response.statusText && json) {
+          this.log(`${response.status} ${response.statusText}: ${json.message}`)
         } else {
           this.log(error)
         }
@@ -66,6 +70,8 @@ RandomCommand.args = [
     required: false
   }
 ]
+
+RandomCommand.hidden = false
 
 RandomCommand.flags = {
   rating: flags.string({ 
