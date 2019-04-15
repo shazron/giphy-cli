@@ -8,6 +8,8 @@ cli for the Giphy web service
 [![Downloads/week](https://img.shields.io/npm/dw/node-giphy.svg)](https://npmjs.org/package/node-giphy)
 [![License](https://img.shields.io/npm/l/node-giphy.svg)](https://github.com/shazron/giphy-cli/blob/master/package.json)
 
+![Sample command for giphy-cli](./giphy.png)
+
 <!-- toc -->
 * [Usage](#usage)
 * [Commands](#commands)
