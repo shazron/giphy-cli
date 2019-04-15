@@ -7,9 +7,10 @@
   "dependencies": {
     "@oclif/command": "^1.5.12",
     "@oclif/config": "^1.12.12",
-    "axios": "^0.18.0",
     "cli-ux": "^5.2.1",
-    "imgcat": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "tempy": "^0.2.1",
+    "term-img": "^4.1.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.0",

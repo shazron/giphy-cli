@@ -1,40 +1,59 @@
-const { Command, flags } = require('@oclif/command')
-const axios = require('axios')
-const imgcat = require('imgcat')
-const {cli} = require('cli-ux')
+const { flags } = require('@oclif/command')
+const BaseCommand = require('../base')
+const termImg = require('term-img')
+const { cli } = require('cli-ux')
+const { URLSearchParams } = require('url');
+const fetch = require('node-fetch')
 
-class RandomCommand extends Command {
+
+class RandomCommand extends BaseCommand {
   async run () {
     const { flags, args } = this.parse(RandomCommand)
-    const params = {
-        api_key: flags['api-key']
-    }
+
+    const params = new URLSearchParams()
+    params.append('api_key', flags['api-key']);     
 
     if (args.tag) {
-      params.tag = args.tag
+      params.append('tag', args.tag);     
     }
     if (flags.rating) {
-      params.rating = flags.rating
+      params.append('rating', flags.rating);     
     }
 
-    return axios.request({
-      baseURL: 'http://api.giphy.com',
-      url: '/v1/gifs/random',
-      method: 'get',
-      params
-    })
-    .then((response) => {
-      const gif_url = response.data.data.image_url
-      if (flags.link) {
-        cli.url(gif_url, gif_url)
-      } else {
-        imgcat(gif_url, { log: true })
+    try {
+      const endpoint = '/v1/gifs/random'
+      cli.action.start('Contacting Giphy...')
+      const res = await fetch(`http://api.giphy.com${endpoint}?${params.toString()}`)
+      const response = await res.json()
+      cli.action.stop()
+
+      const gifUrl = response.data.image_url
+      function showLink() {
+        cli.url(gifUrl, gifUrl)
       }
-    })
-    .catch((error) => {
-      const { response } = error
-      this.log(`${response.status} ${response.statusText}: ${response.data.message}`)
-    })
+  
+      if (flags['link-only']) {
+        showLink()
+      } else {
+        cli.action.start('Downloading gif...')
+        const gifPath = await this.downloadUrl(gifUrl, 'png')
+        cli.action.stop()
+        termImg(gifPath, { 
+          fallback: () => { 
+              cli.open(gifUrl, gifUrl)
+              this.log(`file://${gifPath}`)
+            } 
+          })
+        showLink()
+      }      
+    } catch(error) {
+        const { response } = error
+        if (response && response.status && response.statusText && response.data.message) {
+          this.log(`${response.status} ${response.statusText}: ${response.data.message}`)
+        } else {
+          this.log(error)
+        }
+    }
   }
 }
 
@@ -59,7 +78,7 @@ RandomCommand.flags = {
     char: 'k', 
     description: 'the Giphy API key', 
   }),
-  link: flags.boolean({ 
+  'link-only': flags.boolean({ 
     char: 'l', 
     description: 'show link only', 
   }),
