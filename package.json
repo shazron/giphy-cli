@@ -1,7 +1,7 @@
 {
   "name": "node-giphy",
   "description": "cli for the Giphy web service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Shazron Abdullah",
   "bugs": "https://github.com/shazron/giphy-cli/issues",
   "bin": {

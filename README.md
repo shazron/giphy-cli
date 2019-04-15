@@ -21,7 +21,7 @@ $ npm install -g node-giphy
 $ giphy COMMAND
 running command...
 $ giphy (-v|--version|version)
-node-giphy/0.0.1 darwin-x64 node-v8.15.1
+node-giphy/0.0.2 darwin-x64 node-v8.15.1
 $ giphy --help [COMMAND]
 USAGE
   $ giphy COMMAND
@@ -67,5 +67,5 @@ OPTIONS
   -r, --rating=y|g|pg|pg-13|r  [default: g] filters results by specified rating
 ```
 
-_See code: [src/commands/random.js](https://github.com/shazron/giphy-cli/blob/v0.0.1/src/commands/random.js)_
+_See code: [src/commands/random.js](https://github.com/shazron/giphy-cli/blob/v0.0.2/src/commands/random.js)_
 <!-- commandsstop -->
