@@ -1,23 +1,26 @@
-const { flags } = require('@oclif/command')
+const {flags} = require('@oclif/command')
 const BaseCommand = require('./base')
 const termImg = require('term-img')
-const { cli } = require('cli-ux')
-const { URLSearchParams } = require('url');
+const {cli} = require('cli-ux')
+const {URLSearchParams} = require('url')
 const fetch = require('node-fetch')
 
+function showLink(url) {
+  cli.url(url, url)
+}
 
 class RandomCommand extends BaseCommand {
-  async run () {
-    const { flags, args } = this.parse(RandomCommand)
+  async run() {
+    const {flags, args} = this.parse(RandomCommand)
 
     const params = new URLSearchParams()
-    params.append('api_key', flags['api-key']);     
+    params.append('api_key', flags['api-key'])
 
     if (args.tag) {
-      params.append('tag', args.tag);     
+      params.append('tag', args.tag)
     }
     if (flags.rating) {
-      params.append('rating', flags.rating);     
+      params.append('rating', flags.rating)
     }
 
     try {
@@ -28,35 +31,33 @@ class RandomCommand extends BaseCommand {
       cli.action.stop()
 
       if (!response.ok) {
-        throw { response, json }
+        // eslint-disable-next-line no-throw-literal
+        throw {response, json}
       }
 
       const gifUrl = json.data.image_url
-      function showLink() {
-        cli.url(gifUrl, gifUrl)
-      }
-  
+
       if (flags['link-only']) {
-        showLink()
+        showLink(gifUrl)
       } else {
         cli.action.start('Downloading gif...')
         const gifPath = await this.downloadUrl(gifUrl, 'png')
         cli.action.stop()
-        termImg(gifPath, { 
-          fallback: () => { 
-              cli.open(gifUrl, gifUrl)
-              this.log(`file://${gifPath}`)
-            } 
-          })
-        showLink()
-      }      
-    } catch(error) {
-        const { response, json } = error
-        if (response && response.status && response.statusText && json) {
-          this.log(`${response.status} ${response.statusText}: ${json.message}`)
-        } else {
-          this.log(error)
-        }
+        termImg(gifPath, {
+          fallback: () => {
+            cli.open(gifUrl, gifUrl)
+            this.log(`file://${gifPath}`)
+          },
+        })
+        showLink(gifUrl)
+      }
+    } catch (error) {
+      const {response, json} = error
+      if (response && response.status && response.statusText && json) {
+        this.log(`${response.status} ${response.statusText}: ${json.message}`)
+      } else {
+        this.log(error)
+      }
     }
   }
 }
@@ -64,29 +65,29 @@ class RandomCommand extends BaseCommand {
 RandomCommand.description = 'Grabs a random gif from giphy'
 
 RandomCommand.args = [
-  { 
-    name: 'tag', 
+  {
+    name: 'tag',
     description: 'filters results by the specified tag',
-    required: false
-  }
+    required: false,
+  },
 ]
 
 RandomCommand.hidden = false
 
 RandomCommand.flags = {
-  rating: flags.string({ 
-      char: 'r', 
-      description: 'filters results by specified rating', 
-      default: 'g',
-      options: [ 'y', 'g', 'pg', 'pg-13', 'r' ]
+  rating: flags.string({
+    char: 'r',
+    description: 'filters results by specified rating',
+    default: 'g',
+    options: ['y', 'g', 'pg', 'pg-13', 'r'],
   }),
-  'api-key': flags.string({ 
-    char: 'k', 
-    description: 'the Giphy API key', 
+  'api-key': flags.string({
+    char: 'k',
+    description: 'the Giphy API key',
   }),
-  'link-only': flags.boolean({ 
-    char: 'l', 
-    description: 'show link only', 
+  'link-only': flags.boolean({
+    char: 'l',
+    description: 'show link only',
   }),
 }
 

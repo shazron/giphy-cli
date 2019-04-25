@@ -19,17 +19,11 @@ class BaseCommand extends Command {
         return fetch(url)
             .then(res => {
               return new Promise((resolve, reject) => {
-                  const dest = fs.createWriteStream(tmpFile);
-                  res.body.pipe(dest);
-                  res.body.on('error', err => {
-                    reject(err);
-                  })
-                  dest.on('finish', () => {
-                    resolve(tmpFile);
-                  })
-                  dest.on('error', err => {
-                    reject(err);
-                  })
+                  const dest = fs.createWriteStream(tmpFile)
+                  res.body.pipe(dest)
+                  res.body.on('error', err => reject(err))
+                  dest.on('finish', () => resolve(tmpFile))
+                  dest.on('error', err => reject(err))
                 })
             })
     }
