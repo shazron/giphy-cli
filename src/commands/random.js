@@ -35,7 +35,7 @@ class RandomCommand extends BaseCommand {
         throw {response, json}
       }
 
-      const gifUrl = json.data.image_url
+      const gifUrl = json.data.images.original.url
 
       if (flags['link-only']) {
         showLink(gifUrl)
